@@ -4,17 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 bat 'mvn clean package'
-            }
-            post {
-                success {
-                    echo 'Now Archiving...'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                }
-            }
-        }
-        stage ('Deploy to Staging') {
-            steps {
-                build job: 'Maven Test Project - Deploy To Staging'
+                bat 'docker build . -t tomcatwebapp:${env.BUILD_ID}'
             }
         }
     }
