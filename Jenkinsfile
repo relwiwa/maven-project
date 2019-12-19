@@ -1,7 +1,7 @@
 pipeline {
     agent any
-    stages{
-        stage('Build'){
+    stages {
+        stage('Build') {
             steps {
                 bat 'mvn clean package'
             }
@@ -10,6 +10,11 @@ pipeline {
                     echo 'Now Archiving...'
                     archiveArtifacts artifacts: '**/target/*.war'
                 }
+            }
+        }
+        stage ('Deploy to Staging') {
+            steps {
+                build job: 'Maven Test Project - Deploy To Staging'
             }
         }
     }
